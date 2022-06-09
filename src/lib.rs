@@ -1122,6 +1122,12 @@ mod tests {
         let request = Request::fake_http("GET", "/?flag", vec![], vec![]);
         assert_eq!(request.get_param("flag"), Some("".to_owned()));
     }
+    
+    #[test]
+    fn get_param_flag_with_multiple_params() {
+        let request = Request::fake_http("GET", "/?flag&foo=bar", vec![], vec![]);
+        assert_eq!(request.get_param("flag"), Some("".to_owned()));
+    }
 
     #[test]
     fn body_twice() {
