@@ -1114,13 +1114,13 @@ mod tests {
     #[test]
     fn get_param_flag_with_equals() {
         let request = Request::fake_http("GET", "/?flag=", vec![], vec![]);
-        assert_eq!(request.get_param("flag"), "");
+        assert_eq!(request.get_param("flag"), Some("".to_owned()));
     }
     
     #[test]
     fn get_param_flag_without_equals() {
         let request = Request::fake_http("GET", "/?flag", vec![], vec![]);
-        assert_eq!(request.get_param("flag"), "");
+        assert_eq!(request.get_param("flag"), Some("".to_owned()));
     }
 
     #[test]
