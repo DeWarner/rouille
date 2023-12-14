@@ -36,6 +36,7 @@
 
 use serde;
 use serde_json;
+use serde_json::error::Category;
 use std::error;
 use std::fmt;
 use std::io::Error as IoError;
@@ -89,7 +90,12 @@ impl fmt::Display for JsonError {
             JsonError::IoError(_) => {
                 "could not read the body from the request, or could not execute the CGI program"
             }
-            JsonError::ParseError(_) => "error while parsing the JSON body",
+            JsonError::ParseError(e) => match e.classify() {
+                Category::Io => "error while parsing the JSON body, read/write failure",
+                Category::Syntax => "error while parsing the JSON body, syntactically invalid JSON",
+                Category::Data => "error while parsing the JSON body, schema mismatch",
+                Category::Eof => "error while parsing the JSON body, unexpected end of file",
+            },
         };
 
         write!(fmt, "{}", description)
